@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>《数据网络》课程综合测评问卷</title>
+    <!-- 引入 Coze Web SDK -->
+    <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.19/libs/cn/index.js"></script>
+    <style>
+        :root {
+            --bg-color: #f7f6f2;
+            --card-bg: #ffffff;
+            --text-main: #1a1a1a;
+            --text-sub: #666666;
+            --primary-color: #2c3e50;
+            --primary-hover: #1a252f;
+            --accent-color: #c49a45;
+            --border-color: #e5e5e5;
+            --error-color: #d9534f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        /* 页面容器 */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 通用标题样式 */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .sub-title {
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            color: var(--accent-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #111;
+        }
+
+        .desc {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            color: #333;
+        }
+
+        /* 问卷构成列表 (Page 1) */
+        .list-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .index-box {
+            width: 30px;
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #555;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .list-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 4px;
+        }
+
+        .list-content p {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        /* 填写须知 */
+        .notice-box {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        
+        .notice-box h4 {
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .notice-box ul {
+            padding-left: 20px;
+        }
+
+        .notice-box li {
+            margin-bottom: 8px;
+        }
+
+        /* 按钮 */
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 40px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            color: #555;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f5f5f5;
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(196, 154, 69, 0.3);
+        }
+
+        .btn-accent:hover {
+            background-color: #b0883c;
+            transform: translateY(-2px);
+        }
+
+        /* 表单样式 (Page 2) */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #fafafa;
+            transition: border 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: #fff;
+        }
+
+        /* 问卷答题页 (Page 3) */
+        .progress-header {
+            position: sticky;
+            top: 0;
+            background: rgba(247, 246, 242, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            padding: 15px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-bg {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 30px 0 5px;
+            padding-left: 15px;
+            border-left: 4px solid var(--accent-color);
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 20px;
+            padding-left: 19px;
+        }
+
+        .instruction-box {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .scale-legend {
+            display: flex;
+            gap: 20px;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 20px;
+            background: #f9f9f9;
+            padding: 10px 15px;
+            border-radius: 6px;
+            flex-wrap: wrap;
+        }
+
+        /* 题目卡片 */
+        .question-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .dimension-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .dimension-title::before {
+            content: "•";
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-right: 8px;
+            line-height: 1;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .header-options {
+            display: flex;
+            gap: 10px;
+            padding-right: 10px;
+        }
+
+        .header-options span {
+            width: 36px;
+            text-align: center;
+        }
+
+        .question-row {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .question-row:last-child {
+            border-bottom: none;
+        }
+
+        .q-text {
+            flex: 1;
+            font-size: 0.95rem;
+            color: #333;
+            line-height: 1.5;
+            padding-right: 20px;
+        }
+
+        .q-code {
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-right: 8px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .opt-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .opt-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .opt-btn.selected {
+            background: var(--primary-color);
+            color: #fff;
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 6px rgba(44, 62, 80, 0.3);
+        }
+
+        /* 错误提示 */
+        .error-msg {
+            color: var(--error-color);
+            text-align: center;
+            font-size: 0.9rem;
+            margin: 20px 0;
+            display: none;
+        }
+
+        /* 底部导航按钮 */
+        .nav-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            margin-bottom: 50px;
+        }
+
+        /* ================= 结果页样式 ================= */
+        .result-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .result-icon {
+            width: 60px;
+            height: 60px;
+            background: #eef7ee;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: #4caf50;
+            font-size: 2rem;
+        }
+        .result-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        .result-header p {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+        }
+
+        .result-section {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .result-section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .result-avg {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .result-row {
+            margin-bottom: 20px;
+        }
+        .result-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .result-bar-bg {
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .result-bar-fill {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        .result-interpretation {
+            font-size: 0.9rem;
+            color: #555;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed #eee;
+        }
+        .scoring-note {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.8;
+        }
+        .scoring-note h4 {
+            font-size: 0.95rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .scoring-note ul {
+            padding-left: 20px;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 600px) {
+            .header-options {
+                display: none;
+            }
+            .question-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .q-text {
+                margin-bottom: 15px;
+                padding-right: 0;
+            }
+            .options {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .opt-btn {
+                flex: 1;
+                width: auto;
+            }
+            .scale-legend {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ================= Page 1: 欢迎页 ================= -->
+    <div id="page-welcome" class="page active">
+        <div class="page-header">
+            <span class="sub-title">Student Survey</span>
+            <h1>《数据网络》课程<br>综合测评问卷</h1>
+            <p class="desc">本问卷包含数据素养、计算思维、学习自我效能与认知负荷四个分量表，共 65 题，旨在了解你在课程学习中的真实感受。</p>
+        </div>
+
+        <div class="card">
+            <div class="card-title">问卷构成</div>
+            <div class="list-item">
+                <div class="index-box">1</div>
+                <div class="list-content">
+                    <h4>数据素养自我感知问卷</h4>
+                    <p>7 个维度 · 28 题 · 5点量表</p>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="index-box">2</div>
+                <div class="list-content">
+                    <h4>计算思维自我感知问卷</h4>
+                    <p>5 个维度 · 19 题 · 5点量表</p>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="index-box">3</div>
+                <div class="list-content">
+                    <h4>学习与表现自我效能</h4>
+                    <p>1 个维度 · 8 题 · 7点量表</p>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="index-box">4</div>
+                <div class="list-content">
+                    <h4>认知负荷与促进学习的认知投入</h4>
+                    <p>3 个维度 · 10 题 · 0-10评分</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="notice-box">
+            <h4>填写须知</h4>
+            <ul>
+                <li>请根据你的真实想法作答，答案没有对错之分。</li>
+                <li>每题只能选择一个选项，作答后可返回修改。</li>
+                <li>认知负荷部分请在完成相关学习任务后作答。</li>
+                <li>问卷数据仅用于教学研究，所有信息严格保密。</li>
+            </ul>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="goToPage('page-info')">开始填写</button>
+        </div>
+        <div style="text-align: center; margin-top: 15px; color: #888; font-size: 0.85rem;">预计用时 10-15 分钟</div>
+    </div>
+
+    <!-- ================= Page 2: 基本信息 ================= -->
+    <div id="page-info" class="page">
+        <div class="page-header">
+            <span class="sub-title">Basic Information</span>
+            <h1>填写你的基本信息</h1>
+            <p class="desc">请如实填写姓名与学号，信息仅用于课程测评记录，严格保密。</p>
+        </div>
+
+        <div class="card" style="padding: 30px;">
+            <div class="form-group">
+                <label>姓名 <span style="color:#e74c3c">*</span></label>
+                <input type="text" id="input-name" placeholder="请输入你的姓名">
+            </div>
+            <div class="form-group">
+                <label>学号 <span style="color:#e74c3c">*</span></label>
+                <input type="text" id="input-id" placeholder="请输入你的学号">
+            </div>
+        </div>
+
+        <div class="nav-actions" style="margin-top: 20px;">
+            <button class="btn btn-secondary" onclick="goToPage('page-welcome')">返回</button>
+            <button class="btn btn-primary" onclick="startSurvey()">进入问卷</button>
+        </div>
+    </div>
+
+    <!-- ================= Page 3: 问卷答题页 ================= -->
+    <div id="page-survey" class="page">
+        <div class="progress-header">
+            <div class="progress-text">
+                <span id="progress-part-text">第 1 / 4 部分 本部分 0 / 28</span>
+                <span id="progress-total-text">总进度 0 / 65 (0%)</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progress-bar"></div>
+            </div>
+        </div>
+
+        <div id="survey-content">
+            <!-- 动态生成的题目 -->
+        </div>
+
+        <!-- 错误提示 -->
+        <div id="error-msg" class="error-msg"></div>
+
+        <!-- 底部导航 -->
+        <div class="nav-actions">
+            <button class="btn btn-secondary" id="btn-prev" onclick="prevPart()">上一部分</button>
+            <button class="btn btn-primary" id="btn-next" onclick="nextPart()">下一部分</button>
+        </div>
+    </div>
+
+    <!-- ================= Page 4: 结果页 ================= -->
+    <div id="page-result" class="page">
+        <div class="result-header">
+            <div class="result-icon">✓</div>
+            <h2>问卷已完成</h2>
+            <p id="result-user-info">感谢你的参与。以下是你的测评结果，按各分量表独立呈现。</p>
+        </div>
+
+        <div id="result-content">
+            <!-- 结果动态生成 -->
+        </div>
+
+        <div class="scoring-note">
+            <h4>计分说明</h4>
+            <ul>
+                <li>数据素养（28题）、计算思维（19题）采用 5 点 Likert 量表，各维度单独计算均值，不合并总分。</li>
+                <li>自我效能（8题）采用 7 点评分，单独计算均值，不与其他量表合并。</li>
+                <li>认知负荷（10题）采用 0-10 评分，内在负荷、外在负荷、促进学习投入三个维度分别计分。</li>
+                <li>自我感知问卷测量的是主观判断，不能代替客观能力测验。</li>
+            </ul>
+        </div>
+
+        <div class="btn-group" style="margin-top: 30px; margin-bottom: 50px;">
+            <button class="btn btn-accent" onclick="openCozeAgent()">进入智能体</button>
+            <button class="btn btn-primary" onclick="resetSurvey()">重新填写</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ================= Coze SDK 初始化 =================
+    let cozeClient = null;
+    function initCozeClient() {
+        if (!cozeClient) {
+            cozeClient = new CozeWebSDK.WebChatClient({
+                config: {
+                    bot_id: '7693881388638273551',
+                },
+                componentProps: {
+                    title: 'Coze',
+                },
+                auth: {
+                    type: 'token',
+                    token: 'pat_G3IACgHyyJ4Px37z5flxWbgmuCG3mY99bGf1GscpfrffOwZ1qmi9VojU1bG5S961', // ⚠️ 请替换为你的真实 Token
+                    onRefreshToken: function () {
+                        return 'pat_G3IACgHyyJ4Px37z5flxWbgmuCG3mY99bGf1GscpfrffOwZ1qmi9VojU1bG5S961' // ⚠️ 请替换为你的真实 Token
+                    }
+                }
+            });
+        }
+    }
+
+    // 打开智能体
+    function openCozeAgent() {
+        try {
+            initCozeClient();
+            // 如果 SDK 提供了 open 方法，可以调用 cozeClient.open()
+            // 通常初始化后会自动显示悬浮窗或聊天窗口
+            alert('智能体已启动，请查看页面右下角的聊天窗口。');
+        } catch (e) {
+            console.error('Coze SDK 初始化失败:', e);
+            alert('智能体加载失败，请检查网络或 Token 配置。');
+        }
+    }
+
+    // ================= 问卷数据结构 =================
+    const surveyData = [
+        {
+            part: 1,
+            title: "数据素养自我感知问卷",
+            subtitle: "共 28 题",
+            instruction: "请根据你的真实情况，选择最符合的选项。",
+            maxScore: 5,
+            scale: [
+                { val: 1, label: "非常不同意" },
+                { val: 2, label: "不同意" },
+                { val: 3, label: "不确定" },
+                { val: 4, label: "同意" },
+                { val: 5, label: "非常同意" }
+            ],
+            dimensions: [
+                {
+                    name: "数据问题与数据来源评价",
+                    questions: [
+                        { code: "DL01", text: "面对一个实际问题时，我能够把它转化为可以利用数据回答的问题。" },
+                        { code: "DL02", text: "我能够判断解决一个问题需要收集哪些数据。" },
+                        { code: "DL03", text: "我能够从不同渠道中选择适合任务的数据来源。" },
+                        { code: "DL04", text: "我能够判断一项数据来源是否可靠、及时并且与问题相关。" }
+                    ]
+                },
+                {
+                    name: "数据采集、清洗与管理",
+                    questions: [
+                        { code: "DL05", text: "我能够按照统一的规则采集并记录数据。" },
+                        { code: "DL06", text: "我能够发现数据中的缺失、重复、格式错误或异常数值。" },
+                        { code: "DL07", text: "我能够选择适当的方法处理有问题的数据，并说明这样处理的理由。" },
+                        { code: "DL08", text: "我能够使用清楚的字段名称、数据格式和文件结构管理数据。" }
+                    ]
+                },
+                {
+                    name: "数据分析",
+                    questions: [
+                        { code: "DL09", text: "我能够使用排序、筛选或分类汇总来寻找数据中的信息。" },
+                        { code: "DL10", text: "我能够使用电子表格公式或统计功能完成基本的数据计算。" },
+                        { code: "DL11", text: "我能够通过比较、趋势或变量关系发现数据中的规律。" },
+                        { code: "DL12", text: "我能够根据问题选择合适的数据分析方法。" }
+                    ]
+                },
+                {
+                    name: "数据可视化",
+                    questions: [
+                        { code: "DL13", text: "我能够根据数据类型和分析目的选择合适的图表。" },
+                        { code: "DL14", text: "我能够为图表设置准确的标题、坐标名称、单位和图例。" },
+                        { code: "DL15", text: "我能够判断一幅图表是否清楚、准确，是否可能使读者产生误解。" },
+                        { code: "DL16", text: "我能够修改图表，使重要的数据特征更容易被看出来。" }
+                    ]
+                },
+                {
+                    name: "数据解释与交流",
+                    questions: [
+                        { code: "DL17", text: "我能够根据分析结果提出有数据证据支持的结论。" },
+                        { code: "DL18", text: "我能够区分“两个变量有关联”和“一个变量导致另一个变量变化”。" },
+                        { code: "DL19", text: "我能够指出数据结论可能存在的不确定性或局限。" },
+                        { code: "DL20", text: "我能够清楚说明分析的问题、方法、证据和结论。" }
+                    ]
+                },
+                {
+                    name: "数据决策与迁移应用",
+                    questions: [
+                        { code: "DL21", text: "我能够依据数据证据比较不同的解决方案。" },
+                        { code: "DL22", text: "我能够在作出数据决策时说明自己使用的判断标准。" },
+                        { code: "DL23", text: "面对新的数据集时，我能够迁移以前学过的数据处理方法。" },
+                        { code: "DL24", text: "当出现新的数据证据时，我能够重新检查并调整原来的判断。" }
+                    ]
+                },
+                {
+                    name: "数据伦理、网络隐私与证据核验",
+                    questions: [
+                        { code: "DL25", text: "我能够识别数据中可能涉及个人隐私或敏感信息的内容。" },
+                        { code: "DL26", text: "我知道可以通过匿名化、减少采集或限制访问等方式保护数据安全。" },
+                        { code: "DL27", text: "在网络上传播或使用数据前，我会考虑隐私、版权和信息安全问题。" },
+                        { code: "DL28", text: "当网络平台或智能工具给出数据结论时，我会用原始数据、计算结果或其他可靠来源进行核验。" }
+                    ]
+                }
+            ]
+        },
+        {
+            part: 2,
+            title: "计算思维自我感知问卷",
+            subtitle: "共 19 题",
+            instruction: "请根据你的真实情况，选择最符合的选项。",
+            maxScore: 5,
+            scale: [
+                { val: 1, label: "非常不同意" },
+                { val: 2, label: "不同意" },
+                { val: 3, label: "不确定" },
+                { val: 4, label: "同意" },
+                { val: 5, label: "非常同意" }
+            ],
+            dimensions: [
+                {
+                    name: "抽象",
+                    questions: [
+                        { code: "CT01", text: "面对复杂的信息技术问题时，我能够找出其中最重要的信息。" },
+                        { code: "CT02", text: "我能够暂时忽略与解决问题无关的细节。" },
+                        { code: "CT03", text: "我能够用表格、图示或模型表示一个问题的主要结构。" },
+                        { code: "CT04", text: "我能够从具体的数据现象中概括出主要规律。" }
+                    ]
+                },
+                {
+                    name: "分解",
+                    questions: [
+                        { code: "CT05", text: "我能够把一个复杂任务分成若干个较小的子任务。" },
+                        { code: "CT06", text: "我能够判断各个子任务之间的先后关系。" },
+                        { code: "CT07", text: "遇到难题时，我会先处理其中能够解决的部分。" },
+                        { code: "CT08", text: "我能够把各个子任务的结果重新组合成完整的解决方案。" }
+                    ]
+                },
+                {
+                    name: "算法思维",
+                    questions: [
+                        { code: "CT09", text: "我能够按合理顺序安排解决问题的步骤。" },
+                        { code: "CT10", text: "我能够识别解决过程中需要作出条件判断或重复操作的地方。" },
+                        { code: "CT11", text: "我能够把解决步骤描述得足够清楚，使别人可以按照步骤完成任务。" },
+                        { code: "CT12", text: "我能够比较不同的操作步骤，并选择更有效的方法。" }
+                    ]
+                },
+                {
+                    name: "评价",
+                    questions: [
+                        { code: "CT13", text: "在开始解决问题前，我能够确定评价结果是否正确的标准。" },
+                        { code: "CT14", text: "在完成任务的过程中，我会检查中间结果是否合理。" },
+                        { code: "CT15", text: "当结果出现错误时，我能够逐步查找错误发生的位置和原因。" },
+                        { code: "CT16", text: "我能够比较不同解决方案的准确性、效率和适用条件。" }
+                    ]
+                },
+                {
+                    name: "概括与迁移",
+                    questions: [
+                        { code: "CT17", text: "我能够把以前使用过的解决方法应用到类似的新问题中。" },
+                        { code: "CT18", text: "当新问题发生变化时，我能够调整原来的解决方法。" },
+                        { code: "CT19", text: "完成任务后，我能够总结出可以用于其他问题的一般方法。" }
+                    ]
+                }
+            ]
+        },
+        {
+            part: 3,
+            title: "学习与表现自我效能分量表",
+            subtitle: "共 8 题",
+            instruction: "对于《数据网络》的学习和任务，你对自己完成下列事情有多大信心？",
+            maxScore: 7,
+            scale: [
+                { val: 1, label: "完全没有信心" },
+                { val: 2, label: "很没有信心" },
+                { val: 3, label: "比较没有信心" },
+                { val: 4, label: "一般" },
+                { val: 5, label: "比较有信心" },
+                { val: 6, label: "很有信心" },
+                { val: 7, label: "完全有信心" }
+            ],
+            dimensions: [
+                {
+                    name: "学习与表现自我效能",
+                    questions: [
+                        { code: "SEO1", text: "我有信心理解《数据网络》课程中的基本概念。" },
+                        { code: "SEO2", text: "我有信心理解课程中难度较大的数据分析内容。" },
+                        { code: "SEO3", text: "我有信心掌握课程要求的数据处理和网络信息应用技能。" },
+                        { code: "SEO4", text: "我有信心独立完成教师布置的数据任务。" },
+                        { code: "SEO5", text: "即使遇到不熟悉的数据问题，我也有信心找到解决办法。" },
+                        { code: "SEO6", text: "当分析结果出现错误时，我有信心找到原因并完成修改。" },
+                        { code: "SEO7", text: "我有信心把课程中学到的方法应用到新的数据情境中。" },
+                        { code: "SEO8", text: "总体而言，我有信心在《数据网络》课程中取得良好表现。" }
+                    ]
+                }
+            ]
+        },
+        {
+            part: 4,
+            title: "认知负荷与促进学习的认知投入",
+            subtitle: "共 10 题",
+            instruction: "以下问题针对你刚刚完成的《数据网络》任务。请选择最符合你实际感受的数字。",
+            maxScore: 10,
+            scale: [
+                { val: 0, label: "完全不是这样" },
+                { val: 1, label: "1" }, { val: 2, label: "2" }, { val: 3, label: "3" },
+                { val: 4, label: "4" }, { val: 5, label: "5" }, { val: 6, label: "6" },
+                { val: 7, label: "7" }, { val: 8, label: "8" }, { val: 9, label: "9" },
+                { val: 10, label: "完全是这样" }
+            ],
+            dimensions: [
+                {
+                    name: "内在认知负荷",
+                    questions: [
+                        { code: "CL01", text: "这项任务本身包含许多需要同时理解的信息。" },
+                        { code: "CL02", text: "这项任务中的概念、数据和操作步骤之间的关系比较复杂。" },
+                        { code: "CL03", text: "完成这项任务需要我同时运用多种知识或技能。" }
+                    ]
+                },
+                {
+                    name: "外在认知负荷",
+                    questions: [
+                        { code: "CL04", text: "任务说明的呈现方式使我很难迅速判断应该做什么。" },
+                        { code: "CL05", text: "任务材料或工具界面中有一些无关信息分散了我的注意力。" },
+                        { code: "CL06", text: "完成任务时，我需要反复寻找信息或切换操作，增加了不必要的困难。" }
+                    ]
+                },
+                {
+                    name: "促进学习的认知投入",
+                    questions: [
+                        { code: "CL07", text: "完成任务时，我努力把新内容与以前学过的知识联系起来。" },
+                        { code: "CL08", text: "我认真思考了每一个数据处理或分析步骤背后的理由。" },
+                        { code: "CL09", text: "我主动检查并调整自己的解决方法，以加深对内容的理解。" },
+                        { code: "CL10", text: "完成任务后，我形成了可以用于其他类似问题的解决方法。" }
+                    ]
+                }
+            ]
+        }
+    ];
+
+    // 状态管理
+    let currentPartIndex = 0;
+    let answers = {};
+    let totalQuestions = 0;
+    let answeredCount = 0;
+    let userInfo = { name: '', id: '' };
+
+    // 计算总题数
+    surveyData.forEach(part => {
+        part.dimensions.forEach(dim => {
+            totalQuestions += dim.questions.length;
+        });
+    });
+
+    // 页面切换
+    function goToPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    // 开始问卷
+    function startSurvey() {
+        const name = document.getElementById('input-name').value.trim();
+        const id = document.getElementById('input-id').value.trim();
+        
+        if (!name || !id) {
+            alert('请填写姓名和学号');
+            return;
+        }
+        userInfo = { name, id };
+
+        // 重置状态
+        currentPartIndex = 0;
+        answers = {};
+        answeredCount = 0;
+        
+        renderPart(currentPartIndex);
+        goToPage('page-survey');
+    }
+
+    // 渲染某一部分的问卷
+    function renderPart(index) {
+        const part = surveyData[index];
+        const container = document.getElementById('survey-content');
+        
+        let html = `
+            <div class="section-title">${part.title}</div>
+            <div class="section-subtitle">${part.subtitle}</div>
+            <div class="instruction-box">${part.instruction}</div>
+            <div class="scale-legend">
+                ${part.scale.map(s => `<span>${s.val} ${s.label}</span>`).join('')}
+            </div>
+        `;
+
+        part.dimensions.forEach(dim => {
+            html += `
+                <div class="question-card">
+                    <div class="dimension-title">${dim.name}</div>
+                    <div class="table-header">
+                        <span>题项</span>
+                        <div class="header-options">
+                            ${part.scale.map(s => `<span>${s.val}</span>`).join('')}
+                        </div>
+                    </div>
+            `;
+
+            dim.questions.forEach(q => {
+                const selectedVal = answers[q.code];
+                html += `
+                    <div class="question-row">
+                        <div class="q-text">
+                            <span class="q-code">${q.code}</span> ${q.text}
+                        </div>
+                        <div class="options" data-qcode="${q.code}">
+                            ${part.scale.map(s => `
+                                <button class="opt-btn ${selectedVal == s.val ? 'selected' : ''}" 
+                                        onclick="selectOption('${q.code}', ${s.val}, this)">
+                                    ${s.val}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div>`;
+        });
+
+        container.innerHTML = html;
+
+        // 更新底部按钮状态
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        
+        if (index === 0) {
+            btnPrev.style.visibility = 'hidden';
+        } else {
+            btnPrev.style.visibility = 'visible';
+        }
+
+        if (index === surveyData.length - 1) {
+            btnNext.innerText = '提交问卷';
+        } else {
+            btnNext.innerText = '下一部分';
+        }
+
+        // 隐藏错误提示
+        document.getElementById('error-msg').style.display = 'none';
+        
+        updateProgress();
+    }
+
+    // 选择选项
+    function selectOption(qCode, val, btnElement) {
+        if (answers[qCode] === undefined) {
+            answeredCount++;
+        }
+        answers[qCode] = val;
+
+        const parent = btnElement.parentElement;
+        parent.querySelectorAll('.opt-btn').forEach(btn => btn.classList.remove('selected'));
+        btnElement.classList.add('selected');
+
+        updateProgress();
+        // 隐藏错误提示
+        document.getElementById('error-msg').style.display = 'none';
+    }
+
+    // 检查当前部分是否全部作答
+    function isCurrentPartComplete() {
+        const part = surveyData[currentPartIndex];
+        for (let dim of part.dimensions) {
+            for (let q of dim.questions) {
+                if (answers[q.code] === undefined) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // 上一部分
+    function prevPart() {
+        if (currentPartIndex > 0) {
+            currentPartIndex--;
+            renderPart(currentPartIndex);
+            window.scrollTo(0, 0);
+        }
+    }
+
+    // 下一部分 / 提交
+    function nextPart() {
+        if (!isCurrentPartComplete()) {
+            const errorMsg = document.getElementById('error-msg');
+            errorMsg.innerText = `本部分还有 ${getUnansweredCountInCurrentPart()} 题未作答，请完成全部题目后继续`;
+            errorMsg.style.display = 'block';
+            return;
+        }
+
+        if (currentPartIndex < surveyData.length - 1) {
+            currentPartIndex++;
+            renderPart(currentPartIndex);
+            window.scrollTo(0, 0);
+        } else {
+            // 最后一部分完成，提交
+            showResult();
+        }
+    }
+
+    // 获取当前部分未答题数
+    function getUnansweredCountInCurrentPart() {
+        let count = 0;
+        const part = surveyData[currentPartIndex];
+        part.dimensions.forEach(dim => {
+            dim.questions.forEach(q => {
+                if (answers[q.code] === undefined) count++;
+            });
+        });
+        return count;
+    }
+
+    // 更新进度条
+    function updateProgress() {
+        const currentPart = surveyData[currentPartIndex];
+        let currentPartTotal = 0;
+        currentPart.dimensions.forEach(d => currentPartTotal += d.questions.length);
+        
+        let currentPartAnswered = 0;
+        currentPart.dimensions.forEach(d => {
+            d.questions.forEach(q => {
+                if (answers[q.code] !== undefined) currentPartAnswered++;
+            });
+        });
+
+        document.getElementById('progress-part-text').innerText = 
+            `第 ${currentPartIndex + 1} / ${surveyData.length} 部分 本部分 ${currentPartAnswered} / ${currentPartTotal}`;
+        
+        const percent = Math.round((answeredCount / totalQuestions) * 100);
+        document.getElementById('progress-total-text').innerText = 
+            `总进度 ${answeredCount} / ${totalQuestions} (${percent}%)`;
+        
+        document.getElementById('progress-bar').style.width = `${percent}%`;
+    }
+
+    // ================= 结果计算与展示 =================
+    function showResult() {
+        const resultContent = document.getElementById('result-content');
+        let html = '';
+
+        // 更新头部信息
+        document.getElementById('result-user-info').innerText = 
+            `${userInfo.name}（学号 ${userInfo.id}），感谢你的参与。以下是你的测评结果，按各分量表独立呈现。`;
+
+        // 遍历每个部分
+        surveyData.forEach((part, index) => {
+            let partTotalScore = 0;
+            let partQuestionCount = 0;
+            let dimensionsHtml = '';
+
+            // 遍历维度
+            part.dimensions.forEach(dim => {
+                let dimTotalScore = 0;
+                let dimQuestionCount = dim.questions.length;
+
+                dim.questions.forEach(q => {
+                    const score = answers[q.code] || 0;
+                    dimTotalScore += score;
+                    partTotalScore += score;
+                    partQuestionCount++;
+                });
+
+                const dimAvg = (dimTotalScore / dimQuestionCount).toFixed(2);
+                const percent = (dimAvg / part.maxScore) * 100;
+
+                dimensionsHtml += `
+                    <div class="result-row">
+                        <div class="result-label">
+                            <span>${dim.name}</span>
+                            <span>${dimAvg} / ${part.maxScore} (${dimQuestionCount}题)</span>
+                        </div>
+                        <div class="result-bar-bg">
+                            <div class="result-bar-fill" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const partAvg = (partTotalScore / partQuestionCount).toFixed(2);
+            
+            // 根据部分生成解读
+            let interpretation = "";
+            if (part.part === 1) {
+                if (partAvg < 2.5) interpretation = "解读：表现较低。你可能在数据素养方面还需要加强基础概念的理解。";
+                else if (partAvg < 3.5) interpretation = "解读：表现中等。你已具备一定的基础，建议在薄弱维度上进行针对性练习。";
+                else interpretation = "解读：表现良好。你对自己的数据素养有较高的自信，继续保持。";
+            } else if (part.part === 2) {
+                if (partAvg < 2.5) interpretation = "解读：表现较低。建议多关注计算思维中的抽象、分解等核心概念。";
+                else if (partAvg < 3.5) interpretation = "解读：表现中等。你具备基本的计算思维意识，可通过练习进一步提升。";
+                else interpretation = "解读：表现良好。你在计算思维方面有较强的自信。";
+            } else if (part.part === 3) {
+                if (partAvg < 3.5) interpretation = "解读：信心不足。建议在学习中设定小目标，逐步积累成功经验以提升自我效能感。";
+                else if (partAvg < 5.5) interpretation = "解读：信心中等。你对自己的能力有一定认可，但仍有提升空间。";
+                else interpretation = "解读：信心充足。你对自己完成课程任务有很高的信心。";
+            } else if (part.part === 4) {
+                interpretation = "解读：认知负荷结果需结合具体任务分析。内在负荷较高说明任务本身有难度，外在负荷高则提示教学材料或界面设计可以优化。促进学习的认知投入高是积极信号。";
+            }
+
+            html += `
+                <div class="result-section">
+                    <div class="result-section-title">${part.title}</div>
+                    <div class="result-avg">整体均值 ${partAvg} / ${part.maxScore}</div>
+                    ${dimensionsHtml}
+                    <div class="result-interpretation">${interpretation}</div>
+                </div>
+            `;
+        });
+
+        resultContent.innerHTML = html;
+        goToPage('page-result');
+    }
+
+    // 重新填写
+    function resetSurvey() {
+        // 重置所有状态
+        currentPartIndex = 0;
+        answers = {};
+        answeredCount = 0;
+        userInfo = { name: '', id: '' };
+        
+        // 清空输入框
+        document.getElementById('input-name').value = '';
+        document.getElementById('input-id').value = '';
+        
+        // 回到首页
+        goToPage('page-welcome');
+    }
+</script>
+
+</body>
+</html>
